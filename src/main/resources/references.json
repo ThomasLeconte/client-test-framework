@@ -1,0 +1,21 @@
+{
+  "pages": [
+    {
+      "nom": "accueil",
+      "references": {
+        "addComputerBtn": "//*[@id=\"add\"]",
+        "toto": "tata"
+      }
+    },
+    {
+      "nom": "ajouterOrdinateur",
+      "references": {
+        "champsNom": "//div[@class='input']/input[@id='name']",
+        "champsDateSortie": "//div[@class='input']/input[@id='introduced']",
+        "champsDateFin": "//div[@class='input']/input[@id='discontinued']",
+        "listeCompagnies": "//div[@class='input']/select[@id='company']",
+        "createBouton": "//form/div[@class='actions']/input[@type='submit']"
+      }
+    }
+  ]
+}
