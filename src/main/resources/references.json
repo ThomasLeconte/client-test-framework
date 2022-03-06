@@ -4,7 +4,9 @@
       "nom": "accueil",
       "references": {
         "addComputerBtn": "//*[@id=\"add\"]",
-        "toto": "tata"
+        "rechercheOrdinateur": "//form/input[@id='searchbox']",
+        "rechercheOrdinateurBtn": "//form/input[@id='searchsubmit']",
+        "alerteSuccesCreation": "//section//div[@class='alert-message warning' and contains(., 'has been created')]"
       }
     },
     {

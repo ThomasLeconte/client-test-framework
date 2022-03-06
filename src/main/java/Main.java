@@ -20,9 +20,9 @@ public class Main {
     public static void launchWebDriver() throws Exception {
         PageAccueil accueil = new PageAccueil("accueil", "src/main/resources/references.json", new ChromeDriver());
         PageAjouterOrdinateur pageAjout = accueil.gotoAjouterUnOrdinateur();
-        pageAjout.remplirFormulaire("Mac M1", "2022-10-22", "2022-10-23", "Apple Inc.");
-        pageAjout.clicSurBouton("createBouton");
-        pageAjout.attendre(100);
+        accueil = pageAjout.ajouterOrdinateur("Mac M1", "2022-10-22", "2022-10-23", "Apple Inc.");
+        accueil.verifierPresenceElement("alerteSuccesCreation");
+        accueil.verifierPresenceOrdinateur("ACE");
         pageAjout.driver().quit();
     }
 }

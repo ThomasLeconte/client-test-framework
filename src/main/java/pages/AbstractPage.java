@@ -2,8 +2,10 @@ package pages;
 
 import exceptions.ReferenceNotFoundException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import tools.ReferenceReader;
 
@@ -18,6 +20,7 @@ public class AbstractPage {
     protected String url;
     protected Map<String, String> references;
     protected WebDriver driver;
+    protected Actions driverActions;
 
     public AbstractPage(String pageName, String refPath, WebDriver driver) {
         try {
@@ -26,6 +29,7 @@ public class AbstractPage {
             this.refReader = new ReferenceReader(refPath);
             this.references = refReader.getReferencesOfpage(this.pageName);
             this.driver = driver;
+            this.driverActions = new Actions(driver);
         } catch (FileNotFoundException e) {
 
         }
@@ -47,6 +51,10 @@ public class AbstractPage {
         return this.driver.findElement(By.xpath(xPath));
     }
 
+    public void viderChamps(String referenceChamps) throws Exception {
+        this.getByXPath(this.$(referenceChamps)).clear();
+    }
+
     public void attendre(int nbSecondes) {
         try {
             Thread.sleep(nbSecondes * 1000);
@@ -56,6 +64,7 @@ public class AbstractPage {
     }
 
     public void remplirChamps(String referenceChamps, String valeur) throws Exception {
+        this.viderChamps(referenceChamps);
         this.getByXPath(this.$(referenceChamps)).sendKeys(valeur);
     }
 
@@ -80,6 +89,18 @@ public class AbstractPage {
             this.getByXPath(this.$(referenceBouton)).click();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean verifierPresenceValeurDansTableau(String valueToFind){
+        return this.getByXPath("//table//tr//td[.='"+valueToFind+"']") != null;
+    }
+
+    public boolean verifierPresenceElement(String referenceElement) throws Exception {
+        try {
+            return this.getByXPath(this.$(referenceElement)) != null;
+        } catch (NoSuchElementException e){
+            return false;
         }
     }
 }

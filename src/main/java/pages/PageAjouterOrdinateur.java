@@ -6,8 +6,10 @@ public class PageAjouterOrdinateur extends AbstractPage {
 
     public PageAjouterOrdinateur(String name, String refPath, WebDriver driver) {
         super(name, refPath, driver);
-        this.url = "https://computer-database.gatling.io/computers/new";
-        this.driver().navigate().to(url);
+        String url = "https://computer-database.gatling.io/computers/new";
+        if(!this.driver.getCurrentUrl().equals(url)){
+            this.driver().navigate().to(url);
+        }
     }
 
     public void remplirFormulaire(String computerName, String introducedDate, String discontinuedDate, String company) throws Exception {
@@ -15,5 +17,11 @@ public class PageAjouterOrdinateur extends AbstractPage {
         this.remplirChamps("champsDateSortie", introducedDate);
         this.remplirChamps("champsDateFin", discontinuedDate);
         this.selectionnerValeurDansListe("listeCompagnies", company);
+    }
+
+    public PageAccueil ajouterOrdinateur(String computerName, String introducedDate, String discontinuedDate, String company) throws Exception {
+        this.remplirFormulaire(computerName, introducedDate, discontinuedDate, company);
+        this.clicSurBouton("createBouton");
+        return new PageAccueil("accueil", this.refPath, this.driver);
     }
 }
