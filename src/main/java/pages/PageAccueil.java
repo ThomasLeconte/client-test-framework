@@ -2,9 +2,11 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 
+import java.io.FileNotFoundException;
+
 public class PageAccueil extends AbstractPage {
 
-    public PageAccueil(String name, String refPath, WebDriver driver) {
+    public PageAccueil(String name, String refPath, WebDriver driver) throws FileNotFoundException {
         super(name, refPath, driver);
         String url = "https://computer-database.gatling.io/computers";
         if(!this.driver.getCurrentUrl().equals(url)){
@@ -12,7 +14,7 @@ public class PageAccueil extends AbstractPage {
         }
     }
 
-    public PageAjouterOrdinateur gotoAjouterUnOrdinateur(){
+    public PageAjouterOrdinateur gotoAjouterUnOrdinateur() throws FileNotFoundException {
         return new PageAjouterOrdinateur("ajouterOrdinateur", this.refPath, driver);
     }
 

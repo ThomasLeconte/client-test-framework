@@ -1,15 +1,14 @@
 package pages;
 
 import exceptions.ReferenceNotFoundException;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+import tools.DataReader;
 import tools.ReferenceReader;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,18 +20,61 @@ public class AbstractPage {
     protected Map<String, String> references;
     protected WebDriver driver;
     protected Actions driverActions;
+    protected DataReader jsonReader;
 
-    public AbstractPage(String pageName, String refPath, WebDriver driver) {
-        try {
-            this.pageName = pageName;
-            this.refPath = refPath;
-            this.refReader = new ReferenceReader(refPath);
-            this.references = refReader.getReferencesOfpage(this.pageName);
-            this.driver = driver;
-            this.driverActions = new Actions(driver);
-        } catch (FileNotFoundException e) {
+    public AbstractPage(String pageName, String refPath, WebDriver driver) throws FileNotFoundException {
+        this.pageName = pageName;
+        this.refPath = refPath;
+        this.refReader = new ReferenceReader(refPath);
+        this.references = refReader.getReferencesOfpage(this.pageName);
+        this.driver = driver;
+        this.driverActions = new Actions(driver);
+        this.driver.manage().window().maximize();
+    }
 
+    public void ajouterLecteurDonnees(String cheminFichier) throws FileNotFoundException {
+        this.jsonReader = new DataReader(cheminFichier);
+    }
+
+    public void modifierTailleEcran(int largeur, int hauteur){
+        this.driver.manage().window().setSize(new Dimension(largeur, hauteur));
+    }
+
+    public void supprimerCookies(){
+        this.driver.manage().deleteAllCookies();
+    }
+
+    public void nouvelOnglet(){
+        this.driver.switchTo().newWindow(WindowType.TAB);
+    }
+
+    public void nouvelOnglet(String url){
+        this.nouvelOnglet();
+        this.driver.navigate().to(url);
+    }
+
+    public void allerSurOnglet(int indexOnglet){
+        this.driver.switchTo().window(new ArrayList<>(driver.getWindowHandles()).get(indexOnglet));
+    }
+
+    /**
+     * Basé sur la taille d'écran d'un iPhone 12 / 13 Pro Max
+     */
+    public void passerEnModeMobile(){
+        this.modifierTailleEcran(428, 926);
+    }
+
+    public String getDonnee(String cheminJson) throws Exception {
+        if(this.jsonReader == null){
+            throw new Exception("Vous n'avez pas ajouté de lecteur de données à votre page. Utilisez la méthode ajouterLecteurDonnees() pour l'ajouter !");
         }
+        String result = "";
+        try{
+            result = this.jsonReader.getDonnee(this.jsonReader.getFileContent(), cheminJson).getAsString();
+        }catch (Exception e){
+            System.out.println("Erreur lors de la récupération de la donnée. Veuillez vérifier le chemin spécifié.");
+        }
+        return result;
     }
 
     public WebDriver driver() {
@@ -84,7 +126,7 @@ public class AbstractPage {
         }
     }
 
-    public void clicSurBouton(String referenceBouton){
+    public void clicSurBouton(String referenceBouton) {
         try {
             this.getByXPath(this.$(referenceBouton)).click();
         } catch (Exception e) {
@@ -92,14 +134,14 @@ public class AbstractPage {
         }
     }
 
-    public boolean verifierPresenceValeurDansTableau(String valueToFind){
-        return this.getByXPath("//table//tr//td[.='"+valueToFind+"']") != null;
+    public boolean verifierPresenceValeurDansTableau(String valueToFind) {
+        return this.getByXPath("//table//tr//td[.='" + valueToFind + "']") != null;
     }
 
     public boolean verifierPresenceElement(String referenceElement) throws Exception {
         try {
             return this.getByXPath(this.$(referenceElement)) != null;
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return false;
         }
     }
