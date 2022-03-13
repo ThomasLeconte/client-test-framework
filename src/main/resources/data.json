@@ -1,0 +1,21 @@
+{
+  "ordinateurs": [
+    {
+      "nom": "Mac M1",
+      "dateDebut": "2021-03-12",
+      "dateFin": "2022-03-08",
+      "compagnie": "Apple Inc."
+    },
+    {
+      "nom": "MacBook",
+      "dateDebut": "2006-05-16",
+      "dateFin": "-",
+      "compagnie": "Apple Inc."
+    }
+  ],
+  "toto": {
+    "tata": [
+      "toto"
+    ]
+  }
+}

@@ -1,3 +1,5 @@
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -7,7 +9,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import pages.PageAccueil;
 import pages.PageAjouterOrdinateur;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MainTest {
 
@@ -15,7 +18,8 @@ public class MainTest {
     private static String REF_PATH = "src/main/resources/references.json";
 
     @BeforeAll
-    public static void init(){
+    @Before("@InitDriver")
+    public static void initDriver(){
         driver = new ChromeDriver();
     }
 
@@ -25,6 +29,7 @@ public class MainTest {
     }
 
     @Test
+    @Given("today is Sunday")
     public void creerOrdinateur() {
         PageAjouterOrdinateur ajout = new PageAjouterOrdinateur("ajouterOrdinateur", REF_PATH, driver);
         try{

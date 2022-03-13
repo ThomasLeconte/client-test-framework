@@ -1,0 +1,13 @@
+config:
+  driver: chrome
+  path: C:/toto/tototo
+pages:
+  accueil:
+    references:
+      toto: //dede/adad
+    tests:
+      creerOrdinateur:
+        when: $toto [is clicked]
+        and:  $toto [style-background is white]
+        then: $tata [is showing]
+        finally: $tata [is showing]

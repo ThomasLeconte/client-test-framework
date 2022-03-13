@@ -1,27 +1,20 @@
 package tools;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ReferenceReader {
+public class ReferenceReader extends JsonReader {
 
     private final JsonArray pagesReferences;
 
     public ReferenceReader(String referenceFilePath) throws FileNotFoundException {
-        Gson gson = new Gson();
-        JsonObject object = gson.fromJson(
-                new JsonReader(new FileReader(referenceFilePath)),
-                JsonObject.class
-        );
-        this.pagesReferences = object.get("pages").getAsJsonArray();
+        super(referenceFilePath);
+        this.pagesReferences = this.fileContent.get("pages").getAsJsonArray();
     }
 
     public Map<String, String> getReferencesOfpage(String pageName) {
