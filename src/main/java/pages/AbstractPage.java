@@ -22,7 +22,7 @@ public class AbstractPage {
     protected Actions driverActions;
     protected DataReader jsonReader;
 
-    public AbstractPage(String pageName, String refPath, WebDriver driver) throws FileNotFoundException {
+    public AbstractPage(String pageName, String refPath, WebDriver driver, String url) throws FileNotFoundException {
         this.pageName = pageName;
         this.refPath = refPath;
         this.refReader = new ReferenceReader(refPath);
@@ -30,6 +30,10 @@ public class AbstractPage {
         this.driver = driver;
         this.driverActions = new Actions(driver);
         this.driver.manage().window().maximize();
+        this.url = url;
+        if(!this.driver.getCurrentUrl().equals(url)){
+            this.driver().navigate().to(url);
+        }
     }
 
     public void ajouterLecteurDonnees(String cheminFichier) throws FileNotFoundException {
@@ -93,16 +97,22 @@ public class AbstractPage {
         return this.driver.findElement(By.xpath(xPath));
     }
 
+    public WebElement recupElement(String xPath){
+        return this.getByXPath(xPath);
+    }
+
     public void viderChamps(String referenceChamps) throws Exception {
         this.getByXPath(this.$(referenceChamps)).clear();
     }
 
-    public void attendre(int nbSecondes) {
+    public AbstractPage attendre(int nbSecondes) {
         try {
             Thread.sleep(nbSecondes * 1000);
+            return this;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void remplirChamps(String referenceChamps, String valeur) throws Exception {
@@ -144,5 +154,9 @@ public class AbstractPage {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    public Page genererPage(String pageName, String url) throws FileNotFoundException {
+        return new Page(pageName, this.refPath, driver, url);
     }
 }

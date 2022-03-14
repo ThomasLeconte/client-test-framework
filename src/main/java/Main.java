@@ -1,4 +1,5 @@
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.Page;
 import pages.PageAccueil;
 import tools.DataReader;
 
@@ -21,6 +22,10 @@ public class Main {
         PageAccueil accueil = new PageAccueil("accueil", "src/main/resources/references.json", new ChromeDriver());
         accueil.ajouterLecteurDonnees("src/main/resources/data.json");
         accueil.nouvelOnglet("https://google.com");
+        Page test = accueil.genererPage("toto", "https://www.youtube.com");
+        test.attendre(1).recupElement("//*[@id=\"content\"]/div[2]/div[5]/div[2]/ytd-button-renderer[2]/a").click();
+        test.attendre(1).recupElement("//input[@id=\"search\"]").sendKeys("coucou");
+        test.recupElement("//*[@id=\"search-icon-legacy\"]").click();
 //        accueil.passerEnModeMobile();
 //        accueil.nouvelOnglet();
 //        accueil.attendre(1);

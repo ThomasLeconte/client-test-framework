@@ -7,11 +7,7 @@ import java.io.FileNotFoundException;
 public class PageAccueil extends AbstractPage {
 
     public PageAccueil(String name, String refPath, WebDriver driver) throws FileNotFoundException {
-        super(name, refPath, driver);
-        String url = "https://computer-database.gatling.io/computers";
-        if(!this.driver.getCurrentUrl().equals(url)){
-            this.driver().navigate().to(url);
-        }
+        super(name, refPath, driver, "https://computer-database.gatling.io/computers");
     }
 
     public PageAjouterOrdinateur gotoAjouterUnOrdinateur() throws FileNotFoundException {
