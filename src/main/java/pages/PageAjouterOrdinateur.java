@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 
 public class PageAjouterOrdinateur extends AbstractPage {
 
-    public PageAjouterOrdinateur(String name, String refPath, WebDriver driver) throws FileNotFoundException {
-        super(name, refPath, driver, "https://computer-database.gatling.io/computers/new");
+    public PageAjouterOrdinateur(String refPath, WebDriver driver) throws FileNotFoundException {
+        super("ajouterOrdinateur", refPath, driver, "https://computer-database.gatling.io/computers/new");
     }
 
     public void remplirFormulaire(String computerName, String introducedDate, String discontinuedDate, String company) throws Exception {
@@ -20,6 +20,6 @@ public class PageAjouterOrdinateur extends AbstractPage {
     public PageAccueil ajouterOrdinateur(String computerName, String introducedDate, String discontinuedDate, String company) throws Exception {
         this.remplirFormulaire(computerName, introducedDate, discontinuedDate, company);
         this.clicSurBouton("createBouton");
-        return new PageAccueil("accueil", this.refPath, this.driver);
+        return new PageAccueil(this.refPath, this.driver);
     }
 }

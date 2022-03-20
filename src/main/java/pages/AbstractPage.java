@@ -36,6 +36,10 @@ public class AbstractPage {
         }
     }
 
+    public void mettreAJourReferences(String nomPage){
+        this.references = refReader.getReferencesOfpage(nomPage);
+    }
+
     public void ajouterLecteurDonnees(String cheminFichier) throws FileNotFoundException {
         this.jsonReader = new DataReader(cheminFichier);
     }
@@ -158,5 +162,9 @@ public class AbstractPage {
 
     public Page genererPage(String pageName, String url) throws FileNotFoundException {
         return new Page(pageName, this.refPath, driver, url);
+    }
+
+    public String getUrl(){
+        return this.driver.getCurrentUrl();
     }
 }

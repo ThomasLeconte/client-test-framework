@@ -19,7 +19,7 @@ public class Main {
     public static void launchWebDriver() throws Exception {
 //        DataReader reader = new DataReader("src/main/resources/data.json");
 //        System.out.println(reader.getDonnee(reader.getFileContent(), "ordinateurs/1/nom").getAsString());
-        PageAccueil accueil = new PageAccueil("accueil", "src/main/resources/references.json", new ChromeDriver());
+        PageAccueil accueil = new PageAccueil("src/main/resources/references.json", new ChromeDriver());
         accueil.ajouterLecteurDonnees("src/main/resources/data.json");
         accueil.nouvelOnglet("https://google.com");
         Page test = accueil.genererPage("toto", "https://www.youtube.com");
