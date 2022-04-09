@@ -21,11 +21,14 @@ public class Main {
 //        System.out.println(reader.getDonnee(reader.getFileContent(), "ordinateurs/1/nom").getAsString());
         PageAccueil accueil = new PageAccueil("src/main/resources/references.json", new ChromeDriver());
         accueil.ajouterLecteurDonnees("src/main/resources/data.json");
-        accueil.nouvelOnglet("https://google.com");
-        Page test = accueil.genererPage("toto", "https://www.youtube.com");
-        test.attendre(1).recupElement("//*[@id=\"content\"]/div[2]/div[5]/div[2]/ytd-button-renderer[2]/a").click();
-        test.attendre(1).recupElement("//input[@id=\"search\"]").sendKeys("coucou");
-        test.recupElement("//*[@id=\"search-icon-legacy\"]").click();
+        accueil.faireCaptureEcran("C:\\Users\\bastu\\Desktop");
+
+//        accueil.nouvelOnglet("https://google.com");
+//        Page test = accueil.genererPage("toto", "https://www.youtube.com");
+//        test.attendre(1).recupElement("//*[@id=\"content\"]/div[2]/div[5]/div[2]/ytd-button-renderer[2]/a").click();
+//        test.attendre(1).recupElement("//input[@id=\"search\"]").sendKeys("coucou");
+//        test.recupElement("//*[@id=\"search-icon-legacy\"]").click();
+
 //        accueil.passerEnModeMobile();
 //        accueil.nouvelOnglet();
 //        accueil.attendre(1);

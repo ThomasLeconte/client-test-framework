@@ -2,12 +2,17 @@ package pages;
 
 import exceptions.ReferenceNotFoundException;
 import org.openqa.selenium.*;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+
 import tools.DataReader;
 import tools.ReferenceReader;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -166,5 +171,17 @@ public class AbstractPage {
 
     public String getUrl(){
         return this.driver.getCurrentUrl();
+    }
+
+    public void faireCaptureEcran(String destination) throws IOException {
+        TakesScreenshot driver = (TakesScreenshot) this.driver;
+        File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(screenshot, new File(destination +
+                File.separator +
+                this.pageName +
+                "_" +
+                LocalDateTime.now().toString().replace(".", "_").replace(":", "_") +
+                ".jpg"
+        ));
     }
 }
