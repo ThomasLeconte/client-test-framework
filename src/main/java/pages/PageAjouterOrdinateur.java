@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 public class PageAjouterOrdinateur extends AbstractPage {
 
     public PageAjouterOrdinateur(String refPath, WebDriver driver) throws FileNotFoundException {
-        super("ajouterOrdinateur", refPath, driver, "https://computer-database.gatling.io/computers/new");
+        super("ajouterOrdinateur", driver, "https://computer-database.gatling.io/computers/new", refPath);
     }
 
     public void remplirFormulaire(String computerName, String introducedDate, String discontinuedDate, String company) throws Exception {

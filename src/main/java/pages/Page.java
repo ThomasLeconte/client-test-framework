@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 
 public class Page extends AbstractPage {
 
-    public Page(String pageName, String refPath, WebDriver driver, String url) throws FileNotFoundException {
-        super(pageName, refPath, driver, url);
+    public Page(String pageName, String url, WebDriver driver, String refPath) throws FileNotFoundException {
+        super(pageName, driver, url, refPath);
     }
 }

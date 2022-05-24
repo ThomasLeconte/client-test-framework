@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import tools.DataReader;
+import tools.MobileResizer;
 import tools.ReferenceReader;
 
 import java.io.File;
@@ -26,19 +27,20 @@ public class AbstractPage {
     protected WebDriver driver;
     protected Actions driverActions;
     protected DataReader jsonReader;
+    protected MobileResizer mobileResizer;
 
-    public AbstractPage(String pageName, String refPath, WebDriver driver, String url) throws FileNotFoundException {
+    public AbstractPage(String pageName, WebDriver driver, String url, String refPath) throws FileNotFoundException {
         this.pageName = pageName;
-        this.refPath = refPath;
-        this.refReader = new ReferenceReader(refPath);
-        this.references = refReader.getReferencesOfpage(this.pageName);
         this.driver = driver;
         this.driverActions = new Actions(driver);
+        this.mobileResizer = new MobileResizer();
         this.driver.manage().window().maximize();
         this.url = url;
         if(!this.driver.getCurrentUrl().equals(url)){
-            this.driver().navigate().to(url);
+            this.driver.navigate().to(url);
         }
+
+        if(refPath != null) this.ajouterLecteurReferences(refPath);
     }
 
     public void mettreAJourReferences(String nomPage){
@@ -47,6 +49,16 @@ public class AbstractPage {
 
     public void ajouterLecteurDonnees(String cheminFichier) throws FileNotFoundException {
         this.jsonReader = new DataReader(cheminFichier);
+    }
+
+    public void ajouterReferenceMobile(String nom, int hauteur, int largeur){
+        this.mobileResizer.addReference(nom, largeur, hauteur);
+    }
+
+    public void ajouterLecteurReferences(String refPath) throws FileNotFoundException {
+        this.refPath = refPath;
+        this.refReader = new ReferenceReader(refPath);
+        this.references = refReader.getReferencesOfpage(this.pageName);
     }
 
     public void modifierTailleEcran(int largeur, int hauteur){
@@ -77,6 +89,14 @@ public class AbstractPage {
         this.modifierTailleEcran(428, 926);
     }
 
+    public void passerEnModeMobile(String referenceTelephone) throws Exception {
+        this.mobileResizer.resizePage(this, referenceTelephone);
+    }
+
+    public void passerEnModeDesktop(){
+        this.modifierTailleEcran(1920, 1080);
+    }
+
     public String getDonnee(String cheminJson) throws Exception {
         if(this.jsonReader == null){
             throw new Exception("Vous n'avez pas ajouté de lecteur de données à votre page. Utilisez la méthode ajouterLecteurDonnees() pour l'ajouter !");
@@ -90,11 +110,11 @@ public class AbstractPage {
         return result;
     }
 
-    public WebDriver driver() {
+    private WebDriver driver() {
         return this.driver;
     }
 
-    public String $(String key) throws Exception {
+    private String $(String key) throws Exception {
         if (this.references.containsKey(key)) {
             return this.references.get(key);
         } else {
@@ -102,7 +122,7 @@ public class AbstractPage {
         }
     }
 
-    public WebElement getByXPath(String xPath) {
+    private WebElement getByXPath(String xPath) {
         return this.driver.findElement(By.xpath(xPath));
     }
 
@@ -165,9 +185,9 @@ public class AbstractPage {
         }
     }
 
-    public Page genererPage(String pageName, String url) throws FileNotFoundException {
-        return new Page(pageName, this.refPath, driver, url);
-    }
+/*    public Page genererPage(String pageName, String url) throws FileNotFoundException {
+        return new Page(pageName, driver, url, this.refPath);
+    }*/
 
     public String getUrl(){
         return this.driver.getCurrentUrl();
@@ -176,12 +196,19 @@ public class AbstractPage {
     public void faireCaptureEcran(String destination) throws IOException {
         TakesScreenshot driver = (TakesScreenshot) this.driver;
         File screenshot = driver.getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(screenshot, new File(destination +
+        String destinationResult = destination +
                 File.separator +
                 this.pageName +
                 "_" +
                 LocalDateTime.now().toString().replace(".", "_").replace(":", "_") +
-                ".jpg"
-        ));
+                ".jpg";
+        FileUtils.copyFile(screenshot, new File(destinationResult));
+        log("Capture d'écran effectuée !", "Destination : " + destinationResult);
+    }
+
+    private void log(String title, String desc){
+        System.out.println("\n# - - - - " + title + " - - - - #\n");
+        System.out.println("# " + desc + "\n");
+        System.out.println("# - - - - - - - - - - - - - - - - #\n");
     }
 }
