@@ -16,7 +16,7 @@ public class DataReader extends JsonReader {
         this.SEPARATOR = "/";
     }
 
-    public void setSeparator(String separator){
+    public void setSeparator(String separator) {
         this.SEPARATOR = separator;
     }
 

@@ -21,7 +21,7 @@ public abstract class JsonReader {
         );
     }
 
-    public JsonObject getFileContent(){
+    public JsonObject getFileContent() {
         return this.fileContent;
     }
 }

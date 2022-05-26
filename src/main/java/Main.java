@@ -1,8 +1,3 @@
-import org.openqa.selenium.chrome.ChromeDriver;
-import pages.Page;
-import pages.PageAccueil;
-import tools.DataReader;
-
 public class Main {
 
     public static final String URL = "https://computer-database.gatling.io/computers";

@@ -1,11 +1,10 @@
 package pages;
 
 import exceptions.ReferenceNotFoundException;
-import org.openqa.selenium.*;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
-
 import tools.DataReader;
 import tools.MobileResizer;
 import tools.ReferenceReader;
@@ -15,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,16 +34,17 @@ public class AbstractPage {
         this.driver = driver;
         this.driverActions = new Actions(driver);
         this.mobileResizer = new MobileResizer();
+        this.references = new HashMap<>();
         this.driver.manage().window().maximize();
         this.url = url;
-        if(!this.driver.getCurrentUrl().equals(url)){
+        if (!this.driver.getCurrentUrl().equals(url)) {
             this.driver.navigate().to(url);
         }
 
-        if(refPath != null) this.ajouterLecteurReferences(refPath);
+        if (refPath != null) this.ajouterLecteurReferences(refPath);
     }
 
-    public void mettreAJourReferences(String nomPage){
+    public void mettreAJourReferences(String nomPage) {
         this.references = refReader.getReferencesOfpage(nomPage);
     }
 
@@ -51,7 +52,7 @@ public class AbstractPage {
         this.jsonReader = new DataReader(cheminFichier);
     }
 
-    public void ajouterReferenceMobile(String nom, int hauteur, int largeur){
+    public void ajouterReferenceMobile(String nom, int hauteur, int largeur) {
         this.mobileResizer.addReference(nom, largeur, hauteur);
     }
 
@@ -61,31 +62,47 @@ public class AbstractPage {
         this.references = refReader.getReferencesOfpage(this.pageName);
     }
 
-    public void modifierTailleEcran(int largeur, int hauteur){
+    public void modifierTailleEcran(int largeur, int hauteur) {
         this.driver.manage().window().setSize(new Dimension(largeur, hauteur));
     }
 
-    public void supprimerCookies(){
+    public void supprimerCookies() {
         this.driver.manage().deleteAllCookies();
     }
 
-    public void nouvelOnglet(){
+    public void nouvelOnglet() {
         this.driver.switchTo().newWindow(WindowType.TAB);
     }
 
-    public void nouvelOnglet(String url){
+    public void nouvelOnglet(String url) {
         this.nouvelOnglet();
         this.driver.navigate().to(url);
     }
 
-    public void allerSurOnglet(int indexOnglet){
+    public void allerSurOnglet(int indexOnglet) {
         this.driver.switchTo().window(new ArrayList<>(driver.getWindowHandles()).get(indexOnglet));
+    }
+
+    public void raffraichir() {
+        this.driver.navigate().refresh();
+    }
+
+    public void pagePrecedente() {
+        this.driver.navigate().back();
+    }
+
+    public void pageSuivante() {
+        this.driver.navigate().forward();
+    }
+
+    public void ajouterReferenceDynamique(String nomReference, String xpath) {
+        this.references.put(nomReference, xpath);
     }
 
     /**
      * Basé sur la taille d'écran d'un iPhone 12 / 13 Pro Max
      */
-    public void passerEnModeMobile(){
+    public void passerEnModeMobile() {
         this.modifierTailleEcran(428, 926);
     }
 
@@ -93,18 +110,18 @@ public class AbstractPage {
         this.mobileResizer.resizePage(this, referenceTelephone);
     }
 
-    public void passerEnModeDesktop(){
+    public void passerEnModeDesktop() {
         this.modifierTailleEcran(1920, 1080);
     }
 
     public String getDonnee(String cheminJson) throws Exception {
-        if(this.jsonReader == null){
+        if (this.jsonReader == null) {
             throw new Exception("Vous n'avez pas ajouté de lecteur de données à votre page. Utilisez la méthode ajouterLecteurDonnees() pour l'ajouter !");
         }
         String result = "";
-        try{
+        try {
             result = this.jsonReader.getDonnee(this.jsonReader.getFileContent(), cheminJson).getAsString();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Erreur lors de la récupération de la donnée. Veuillez vérifier le chemin spécifié.");
         }
         return result;
@@ -126,7 +143,7 @@ public class AbstractPage {
         return this.driver.findElement(By.xpath(xPath));
     }
 
-    public WebElement recupElement(String xPath){
+    public WebElement recupElement(String xPath) {
         return this.getByXPath(xPath);
     }
 
@@ -189,7 +206,7 @@ public class AbstractPage {
         return new Page(pageName, driver, url, this.refPath);
     }*/
 
-    public String getUrl(){
+    public String getUrl() {
         return this.driver.getCurrentUrl();
     }
 
@@ -206,7 +223,7 @@ public class AbstractPage {
         log("Capture d'écran effectuée !", "Destination : " + destinationResult);
     }
 
-    private void log(String title, String desc){
+    private void log(String title, String desc) {
         System.out.println("\n# - - - - " + title + " - - - - #\n");
         System.out.println("# " + desc + "\n");
         System.out.println("# - - - - - - - - - - - - - - - - #\n");

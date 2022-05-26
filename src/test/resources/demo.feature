@@ -1,4 +1,4 @@
-Feature: Testeuuh
+Feature: Demo
 
   @BeforeInitDriver
   @AfterFermerFenetre
@@ -29,19 +29,19 @@ Feature: Testeuuh
     Given Je suis sur le site "https://computer-database.gatling.io/computers/new"
     And J'ouvre un nouvel onglet avec l'url "https://www.youtube.com/"
     Then Je suis sur la page "https://www.youtube.com/"
-    And Je ne suis pas sur la page "https://computer-database.gatling.io/computers/new"
     Then Je vais sur l'onglet numéro 1
     And Je suis sur la page "https://computer-database.gatling.io/computers/new"
 
   @BeforeInitDriver
   @AfterFermerFenetre
-  Scenario: Detecter un element disparu en mode mobile
+  Scenario: Supprimer les cookies
     Given Je suis sur le site "https://www.youtube.com/"
-    And Je déclare une nouvelle référence de téléphone avec le nom "iPhone 13" et les dimensions "390x844"
-    Then Je passe en mode mobile sur le modèle "iPhone 13"
-    And J'attends 2 seconde
-    And L'élément avec le xpath "//*[@id='guide-icon']" n'existe pas
-    And Je passe en mode desktop
-    And J'attends 1 seconde
-    Then L'élément avec le xpath "//*[@id='guide-icon']" existe
+    Then J'attends 5 seconde
+    And L'élément avec le xpath "//tp-yt-paper-button[@id='button']/yt-formatted-string[contains(., 'Tout accepter')]" existe
+    And Je definis l'element "boutonAccepter" avec la référence "//tp-yt-paper-button[@id='button']/yt-formatted-string[contains(., 'Tout accepter')]"
+    Then Je clique sur le bouton de reference "boutonAccepter"
+    Then Je supprime les cookies du navigateur
+    Then Je raffraichis la page
+    Then J'attends 5 seconde
+    Then L'élément avec le xpath "//tp-yt-paper-button[@id='button']/yt-formatted-string[contains(., 'Tout accepter')]" existe
     
