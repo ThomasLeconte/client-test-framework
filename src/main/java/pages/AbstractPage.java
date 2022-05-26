@@ -118,7 +118,7 @@ public class AbstractPage {
         if (this.jsonReader == null) {
             throw new Exception("Vous n'avez pas ajouté de lecteur de données à votre page. Utilisez la méthode ajouterLecteurDonnees() pour l'ajouter !");
         }
-        String result = "";
+        String result = null;
         try {
             result = this.jsonReader.getDonnee(this.jsonReader.getFileContent(), cheminJson).getAsString();
         } catch (Exception e) {
@@ -141,6 +141,10 @@ public class AbstractPage {
 
     private WebElement getByXPath(String xPath) {
         return this.driver.findElement(By.xpath(xPath));
+    }
+
+    public WebElement recupElementParReference(String ref) throws Exception {
+        return this.getByXPath($(ref));
     }
 
     public WebElement recupElement(String xPath) {

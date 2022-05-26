@@ -147,4 +147,13 @@ public class StepsTest {
     public void jeRaffraichisLaPage() {
         page.raffraichir();
     }
+
+    @Then("L'élément avec la référence {string} existe")
+    public void lÉlémentAvecLaRéférenceExiste(String ref) {
+        try {
+            assertNotNull(page.recupElementParReference(ref));
+        } catch (Exception e) {
+            Assertions.fail(e);
+        }
+    }
 }

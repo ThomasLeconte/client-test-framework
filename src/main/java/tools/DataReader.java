@@ -2,6 +2,7 @@ package tools;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import exceptions.DataNotFoundException;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class DataReader extends JsonReader {
         this.SEPARATOR = separator;
     }
 
-    public JsonElement getDonnee(JsonElement jsonFile, String jsonPath) {
+    public JsonElement getDonnee(JsonElement jsonFile, String jsonPath) throws DataNotFoundException {
         List<String> pathExploded = Arrays.asList(jsonPath.split(SEPARATOR));
         JsonElement result = jsonFile;
         for (int i = 0; i < pathExploded.size(); i++) {
@@ -29,7 +30,11 @@ public class DataReader extends JsonReader {
                     if (result.getAsJsonArray().get(0).isJsonPrimitive()) {
                         result = ((JsonArray) result).get(0).getAsJsonPrimitive();
                     } else {
-                        result = result.getAsJsonArray().get(Integer.parseInt(pathExploded.get(0))).getAsJsonObject();
+                        try{
+                            result = result.getAsJsonArray().get(Integer.parseInt(pathExploded.get(0))).getAsJsonObject();
+                        }catch (IndexOutOfBoundsException e){
+                            throw new DataNotFoundException(jsonPath, "OUT_OF_RANGE");
+                        }
                     }
                 } else {
                     result = result.getAsJsonObject().getAsJsonPrimitive(pathExploded.get(0));

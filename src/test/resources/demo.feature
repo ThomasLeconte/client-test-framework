@@ -36,12 +36,12 @@ Feature: Demo
   @AfterFermerFenetre
   Scenario: Supprimer les cookies
     Given Je suis sur le site "https://www.youtube.com/"
-    Then J'attends 5 seconde
+    Then J'attends 4 seconde
     And L'élément avec le xpath "//tp-yt-paper-button[@id='button']/yt-formatted-string[contains(., 'Tout accepter')]" existe
     And Je definis l'element "boutonAccepter" avec la référence "//tp-yt-paper-button[@id='button']/yt-formatted-string[contains(., 'Tout accepter')]"
     Then Je clique sur le bouton de reference "boutonAccepter"
     Then Je supprime les cookies du navigateur
     Then Je raffraichis la page
-    Then J'attends 5 seconde
-    Then L'élément avec le xpath "//tp-yt-paper-button[@id='button']/yt-formatted-string[contains(., 'Tout accepter')]" existe
+    Then J'attends 2 seconde
+    Then L'élément avec la référence "boutonAccepter" existe
     
