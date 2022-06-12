@@ -1,11 +1,22 @@
 # Client Test Framework
 
+> Projet réalisé dans le cadre de l'UE GLG101 (Test et Validation du Logiciel) par **Thomas Leconte** et **Alexis Leroux**.
+
 Ce framework est basé sur la technologie WebDriver, qui permet de contrôler automatiquement un navigateur internet grâce
 à une API. Ici, la bibliothèque Selenium WebDriver est utilisée pour piloter notre navigateur.
 
+## Table des matières ##
+[Fonctionnalités principales](#fonctionnalités-principales)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Méthodes utiles](#methodes-utiles)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Instancier une nouvelle page](#instancier-une-nouvelle-page)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Référencement d'élément](#référencement-délément)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Jeux de données](#jeux-de-données)  
+[Pour le développeur](#pour-le-développeur)  
+[Pour le testeur](#pour-le-testeur)
+
 ## Fonctionnalités principales
 
-### Méthodes utiles
+### Methodes utiles
 
 **<...> = arguments obligatoires**  
 **[...] = arguments optionnels**
@@ -14,11 +25,19 @@ Ce framework est basé sur la technologie WebDriver, qui permet de contrôler au
 
 > allerSurOnglet(int indexOnglet) - Sélectionne un onglet parmis ceux qui sont disponibles grâce à son index dans la liste des onglets.
 
+> pagePrecedente() - Retourner sur la page précédente.
+
+> pageSuivante() - Retourner sur la page suivante.
+
+> raffraichir() - Raffraichir la page actuelle.
+
 > supprimerCookies() - Supprimme l'ensemble des cookies du navigateur.
 
 > modifierTailleEcran(int largeur, int longueur) - Redimensionne la fenêtre actuelle avec des dimensions personnalisées.
 
-> passerEnModeMobile() - Redmimensionne la fenêtre pour lui donner l'apparence d'un écran de smartphone.
+> ajouterReferenceMobile(String nom, int hauteur, int largeur) - Déclarer un téléphone avec des dimensions personnalisées.
+
+> passerEnModeMobile([String referenceTelephone]) - Redmimensionne la fenêtre pour lui donner l'apparence d'un écran de smartphone.
 
 > viderChamps(String referenceChamps) - vide le champs d'un formulaire.
 
@@ -35,6 +54,9 @@ Ce framework est basé sur la technologie WebDriver, qui permet de contrôler au
 > verifierPresenceElement(String referenceElement) - Contrôle la présence d'un élément sur une page grâce à sa référence.
 
 > getDonnee(String cheminJSON) - Récupère la valeur d'une donnée JSON grâce à son chemin hiérarchique dans le fichier de données.
+
+> faireCaptureEcran(String dossierDestination) - Sauvegarde une capture d'écran de la page actuelle dans la destination ciblée.
+
 
 ### Instancier une nouvelle page
 
@@ -73,7 +95,38 @@ contrôler ses attributs.
       }
     },
     ...
+}
+```
+Il se peut que durant l'execution d'un test, vous vouliez ajouter une référence dynamiquement. Pour se faire, vous pouvez
+utiliser la méthode `ajouterReferenceDynamique(String nomReference, String xPath)`.
+
+Egalement, dans le cas d'un changement de page, les références enregistrées peuvent ne plus correspondre à ce qu'il y a sur la page. Vous
+pouvez donc mettre à jour les références de la page via la méthode `mettreAJourReferences(String nomPage)` pour charger les références de votre
+nouvelle page.
+
+### Jeux de données
+Pour accompagner vos tests, un module de lecture de données est également disponible. Pour l'activer, vous devez l'ajouter
+avec la méthode `ajouterLecteurDonnees(String cheminFichier)` depuis l'instanciation de votre
+page.
+
+Le fichier hébergant les données peut avoir n'importe quelle structure. Prenons l'exemple suivant :
+```json
+{
+  "ordinateurs": [
+    {
+      "nom": "MacBook",
+      "dateDebut": "2006-05-16",
+      "dateFin": "-",
+      "compagnie": "Apple Inc."
     }
+  ]
+}
+```
+Pour récupérer la valeur de `dateFin` du premier ordinateur, il suffit d'utiliser la méthode `getDonnee(String cheminJSON)` depuis une de vos pages :
+```java
+Page p = new Page("maPage", "https://www.google.fr", driver, "cheminVersFichierReferences");
+p.ajouterLecteurDonnees("cheminVersFichierDonnees");
+p.getDonnee("ordinateurs/0/dateFin");
 ```
 
 ## Pour le développeur
