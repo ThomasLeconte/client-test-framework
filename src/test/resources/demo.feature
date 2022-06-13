@@ -44,4 +44,3 @@ Feature: Demo
     Then Je raffraichis la page
     Then J'attends 2 seconde
     Then L'élément avec la référence "boutonAccepter" existe
-    
