@@ -56,7 +56,7 @@ public class AbstractPage {
         this.mobileResizer.addReference(nom, largeur, hauteur);
     }
 
-    public void ajouterLecteurReferences(String refPath) throws FileNotFoundException {
+    private void ajouterLecteurReferences(String refPath) throws FileNotFoundException {
         this.refPath = refPath;
         this.refReader = new ReferenceReader(refPath);
         this.references = refReader.getReferencesOfpage(this.pageName);
