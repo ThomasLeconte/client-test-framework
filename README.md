@@ -131,6 +131,30 @@ p.getDonnee("ordinateurs/0/dateFin");
 
 ## Pour le développeur
 
+Le développeur peut concevoir des fonctions métier à destination du testeur.
+Les fonctions ont pour but d'effectuer une suite d'actions avec un simple appel.
+Le testeur peut s'épargner des conditions longue dans ses tests.
+
+Il est nécessaire de déclarer sa fonction avec les annotations concuber pour qu'elle soit utilisable par le testeur.
+
+Exemple d'une fonction permettant de vérifier la présence d'une référence sur la page "panier" du site Actimac.
+
+```java
+    @And("Je verifie la présence de {string} dans le panier")
+    public void jeCharge(String nomProduit){
+        try {
+            page = new Page("Panier", "https://www.actimag.biz/panier",  driver, REF_PATH);
+            WebElement Element = page.recupElementParReference("titreArticle");
+            assertEquals(Element.getText(), nomProduit);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+```
+
 ## Pour le testeur
 
 Pour concevoir vos tests, voici un exemple pas à pas avec un scénario simple.
