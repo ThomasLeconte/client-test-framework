@@ -186,9 +186,7 @@ Scenario: Ajouter un iphone 13 pro au panier // Nom de notre scénario
 
         // Chargement du site web
         Given Je suis sur le site "https://www.actimag.biz/"
-```
-![Url actimag](img-readme/Actimagurl.png)
-```java
+
         // Délais d'attente pour être sur que la page soit bien chargé (+/- long en fonction de la connexion)
         Then J'attends 2 seconde
         //Définition du xpath de l'élement
@@ -210,15 +208,10 @@ Scenario: Ajouter un iphone 13 pro au panier // Nom de notre scénario
 ```java
         Then J'attends 2 seconde
         Then Je clique sur le bouton de reference "Iphone13"
-``` 
-
-```java
         And Je definis l'element "boutonAcheterIphone13Pro" avec la référence "/html/body/main/section/div/div[2]/div/div[2]/div/div[8]/div/div[2]/div/div/div/div/div/div[4]/div/div[4]/div/a"
         Then J'attends 2 seconde
-``` 
-![Url actimag](img-readme/BtnAcheteriphone.png)
 
-```java
+        
         Then Je clique sur le bouton de reference "boutonAcheterIphone13Pro"
         And Je definis l'element "couleurOr" avec la référence "/html/body/main/section/div/div[2]/section/div[1]/div/div[2]/div[3]/div[1]/form/div[1]/div[1]/ul/li[2]/label/input"
         Then J'attends 2 seconde
@@ -234,6 +227,7 @@ Scenario: Ajouter un iphone 13 pro au panier // Nom de notre scénario
 
 
 ```java
+        //Vérification de la présence du libelle "Produit ajouté au panier avec succès"
         And L'élément avec le xpath "/html/body/div[2]/div/div/div[1]/h4/text()" existe
 ```
 ![Url actimag](img-readme/panier.png)

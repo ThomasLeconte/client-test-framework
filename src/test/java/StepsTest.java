@@ -42,19 +42,6 @@ public class StepsTest {
         }
     }
 
-    @And("Je verifie la présence de {string} dans le panier")
-    public void jeCharge(String nomProduit){
-        try {
-            page = new Page("Panier", "https://www.actimag.biz/panier",  driver, REF_PATH);
-            WebElement Element = page.recupElementParReference(nomProduit);
-            assertEquals(Element.getText(), nomProduit);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @And("Je charge les references de la page {string}")
     public void jeChargeLesReferencesDeLaPage(String nomPage) {
