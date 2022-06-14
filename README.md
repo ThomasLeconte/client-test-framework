@@ -132,3 +132,84 @@ p.getDonnee("ordinateurs/0/dateFin");
 ## Pour le développeur
 
 ## Pour le testeur
+
+Pour concevoir vos tests, voici un exemple pas à pas avec un scénario simple.
+
+Tout d'abord nous devons créer un fichier avec l'extension .feature à l'emplacement suivant :
+
+src/test/resources/DemoReadme.feature
+
+Ce fichier feature contiendra nos scénarios de tests.
+
+Objectifs du test :
+
+- Se rendre sur le site https://www.actimag.biz/
+- Cliquer dans le menu sur "Iphone"
+- Cliquer dans le sous-menu "Iphone 13"
+- Cliquer sur le bouton "Acheter un Iphone 13 pro"
+- Choisir la couleur "OR"
+- Ajouter au panier
+- Vérifier l'ajout au panier
+
+```java
+Feature: DemoReadme //Nom de notre feature
+
+
+@BeforeInitDriver // Initialisation avant tout de notre driver chrome
+@AfterFermerFenetre // Fermeture de la fenetre à la fin de l'exécution du scénario
+
+Scenario: Ajouter un iphone 13 pro au panier // Nom de notre scénario
+
+        // Chargement du site web
+        Given Je suis sur le site "https://www.actimag.biz/"
+```
+![Url actimag](img-readme/Actimagurl.png)
+```java
+        // Délais d'attente pour être sur que la page soit bien chargé (+/- long en fonction de la connexion)
+        Then J'attends 2 seconde
+        //Définition du xpath de l'élement
+        And Je definis l'element "menuIphone" avec la référence "/html/body/main/header/div[3]/div/div/ul/li[5]"
+ ```
+![Url actimag](img-readme/Menuiphone.png)
+
+ ```java       
+        //Clique sur le menu "Iphone"
+        Then Je clique sur le bouton de reference "menuIphone"
+        
+        Then J'attends 2 seconde
+        
+        And  Je definis l'element "Iphone13" avec la référence "/html/body/main/header/div[3]/div/div/ul/li[5]/div/table/tbody/tr/td[2]/div/div[2]/span/a"
+``` 
+
+![Url actimag](img-readme/Sousmenuiphone.png)
+
+```java
+        Then J'attends 2 seconde
+        Then Je clique sur le bouton de reference "Iphone13"
+``` 
+
+```java
+        And Je definis l'element "boutonAcheterIphone13Pro" avec la référence "/html/body/main/section/div/div[2]/div/div[2]/div/div[8]/div/div[2]/div/div/div/div/div/div[4]/div/div[4]/div/a"
+        Then J'attends 2 seconde
+``` 
+![Url actimag](img-readme/BtnAcheteriphone.png)
+
+```java
+        Then Je clique sur le bouton de reference "boutonAcheterIphone13Pro"
+        And Je definis l'element "couleurOr" avec la référence "/html/body/main/section/div/div[2]/section/div[1]/div/div[2]/div[3]/div[1]/form/div[1]/div[1]/ul/li[2]/label/input"
+        Then J'attends 2 seconde
+```
+![Url actimag](img-readme/Couleuriphone.png)
+
+```java
+        Then Je clique sur le bouton de reference "couleurOr"
+        And Je definis l'element "boutonAjouterPanier" avec la référence "/html/body/main/section/div/div[2]/section/div[1]/div/div[2]/div[3]/div[1]/form/div[2]/div/div/button"
+        Then Je clique sur le bouton de reference "boutonAjouterPanier"
+        Then J'attends 2 seconde
+```
+
+
+```java
+        And L'élément avec le xpath "/html/body/div[2]/div/div/div[1]/h4/text()" existe
+```
+![Url actimag](img-readme/panier.png)

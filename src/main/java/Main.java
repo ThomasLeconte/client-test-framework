@@ -3,7 +3,7 @@ public class Main {
     public static final String URL = "https://computer-database.gatling.io/computers";
 
     public static void main(String[] args) throws InterruptedException {
-        System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", ".\\chromedriver");
         try {
             launchWebDriver();
         } catch (Exception e) {
